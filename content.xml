@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="playerfactiontag" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" version="120" date="2019-02-15" save="0">
+  <text language="7" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="33" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="34" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="39" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="44" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="49" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="86" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+  <text language="88" name="Player Faction Tag" description="Allows the player to set a custom faction tag for owned objects"  author="marksmango" />
+</content>

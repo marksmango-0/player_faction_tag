@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mdscript name="PlayerFactionTag" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="InitPlayerTag" instantiate="true" namespace="this">
+			<actions>
+				<!--<write_to_logbook category="upkeep" title="'Loaded'"/>-->
+				
+				<!--Change the exact here to whatever you want prefixed onto new ships, stations, and deployables. Make sure to keep the single quotes around your tag. -->
+					<set_value name="$factionprefix" exact="'MAR'"/>
+				<!-- It doesn't have to be a three letter tag  -->
+			</actions>
+			<cues>
+				<cue name="OnPlayerOwnedObjectBuiltForTag" instantiate="true" namespace="parent">
+					<conditions>
+						<check_all>
+							<check_any>
+								<!--<event_player_owned_claimed_object />-->
+								<event_satellite_launched space="player.galaxy"/>
+								<event_lasertower_launched space="player.galaxy" />
+								<event_mine_launched space="player.galaxy" />
+								<event_navbeacon_launched space="player.galaxy" />
+								<event_resourceprobe_launched space="player.galaxy" />
+								<event_player_built_ship/>
+								<event_player_built_station/>
+							</check_any>
+							<check_value value="event.param.isplayerowned and event.param.isoperational" />
+						</check_all>
+					</conditions>
+					<actions>
+						<!--<write_to_logbook category="upkeep" title="'renaming deployed/built object'"/>-->
+						<set_value name="$parm1" exact = "event.param" />
+						<set_value name="$parm2" exact = "event.param2" />
+						
+						<do_if value="$parm2.isdeployable ">
+							<set_value name="$completedname" exact = "$parm2.name" />
+							<set_object_name object="$parm2" name="$factionprefix +' '+ $completedname" comment=""/>
+						</do_if>
+						<do_elseif value=" $parm1.isclass.station or $parm1.isclass.ship ">
+							<set_value name="$completedname" exact = "$parm1.name" />
+							<set_object_name object="$parm1" name="$factionprefix +' '+ $completedname" comment=""/>
+						</do_elseif>
+					</actions>
+				</cue>
+					
+				<cue name="TagOwnedObjectsAtGameStart" instantiate="true" namespace="parent">
+					<conditions>
+						<event_game_started />
+					</conditions>
+					<delay exact="10s" />
+					<actions>
+						<!--<write_to_logbook category="upkeep" title="'starting free ship rename'"/>-->
+						<create_group groupname="$OwnedObjects"/>
+						<find_object owner="faction.player" groupname="$OwnedObjects" space="player.galaxy" multiple="true" recursive="true" checkoperational="false" />
+						<!--<write_to_logbook category="upkeep" title="'Owned: '+$OwnedObjects.count"/>-->
+						<do_all exact="$OwnedObjects.count" counter="$i">
+							<set_value name="$completedname" exact = "$OwnedObjects.{$i}.name" />
+							<!--<show_notification text="$OwnedObjects.{$i}.name" />-->
+							<set_object_name object="$OwnedObjects.{$i}" name="$factionprefix +' '+ $completedname" comment=""/>
+							<!--<show_notification text="'ship renamed'+ $OwnedObjects.{$i}.name" />-->
+						</do_all>
+					</actions>
+				</cue>
+				<cue name="RenameClaimedShip" instantiate="true" namespace="parent">
+					<conditions>
+						<event_player_owned_claimed_object />
+					</conditions>
+					<actions>
+						<!--<write_to_logbook category="upkeep" title="'renaming claimed object'"/>-->
+						<do_if value="event.param and event.param.isplayerowned">
+							<set_value name="$completedname" exact = "event.param.name" />
+							<set_object_name object="event.param" name="$factionprefix +' '+ $completedname" comment=""/>
+						</do_if>
+					</actions>
+				</cue>
+				<cue name="RenameClaimedShipTwo" instantiate="true" namespace="parent">
+					<conditions>
+						<event_player_signal_unlock_finished />
+					</conditions>
+					<actions>
+						<!--<write_to_logbook category="upkeep" title="'renaming scanned object ' + event.param.object.name + ' ' + event.param.type"/>-->
+						<do_if value="event.param and event.param.type == signalleaktype.claim">
+							<set_value name="$completedname" exact = "event.param.object.name" />
+							<set_object_name object="event.param.object" name="$factionprefix +' '+ $completedname" comment=""/>
+						</do_if>
+					</actions>
+				</cue>
+				<cue name="RenameBoardedVessel" instantiate="true" namespace="parent">
+					<actions>
+						<!--<write_to_logbook category="upkeep" title="'renaming boarded object ' + event.param.name"/>-->
+							<set_value name="$completedname" exact = "event.param.name" />
+							<set_object_name object="event.param" name="$factionprefix +' '+ $completedname" comment=""/>
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+	</cues>
+</mdscript>
